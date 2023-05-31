@@ -1,0 +1,29 @@
+syntax on
+set autoindent
+set expandtab
+set tabstop=4
+set number
+set paste
+set nowrap
+
+"自動補完
+inoremap { {}<LEFT>
+inoremap [ []<LEFT>
+inoremap ( ()<LEFT>
+inoremap " ""<LEFT>
+vnoremap { "zdi^V{<C-R>z}<ESC>
+vnoremap [ "zdi^V[<C-R>z]<ESC>
+vnoremap ( "zdi^V(<C-R>z)<ESC>
+vnoremap " "zdi^V"<C-R>z^V"<ESC>
+vnoremap ' "zdi'<C-R>z'<ESC>
+
+au BufRead,BufNewFile *.md set filetype=markdown
+
+" 挿入モードでカーソル形状を変更する
+let &t_SI.="\e[6 q"
+let &t_EI.="\e[2 q"
+" カーソル形状がすぐに元に戻らないのでタイムアウト時間を調整
+set ttimeoutlen=10
+" 挿入モードを抜けた時にカーソルが見えなくなる現象対策(なぜかこれで治る)
+inoremap <ESC> <ESC>
+
