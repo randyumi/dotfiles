@@ -1,36 +1,41 @@
 #! /bin/sh
 
-# リモート宛に接続確認、繋がらなかったら終了
+export LANG='en_US.UTF-8'
 REMOTE=133.130.59.115
 LOCAL_PATH=$HOME/GoogleDrive/keepass-master.kdbx.kdbx
 SSH_REMOTE=user@$REMOTE
 REMOTE_PATH=syncthing/volume/farry-merwy/keepass/keepass-master.kdbx.kdbx
+
+# リモート宛に接続確認、繋がらなかったら終了
 ping -t 3 -c 1 133.130.59.115 > /dev/null
 if [ "$?" -ne 0 ]; then
   exit;
 fi
 
-# ローカルとリモートのファイルハッシュ確認、同じだったら何もせず終了
-export LANG='en_US.UTF-8'
 LOCAL_MD5=$(md5sum $LOCAL_PATH | cut -d ' ' -f1)
 REMOTE_MD5=$(ssh $SSH_REMOTE "md5sum $REMOTE_PATH" | cut -d ' ' -f1)
+LOCAL_UPDATED_AT=`ls -og --time-style='+%s' $LOCAL_PATH|cut -d ' '  -f 4`
+REMOTE_UPDATED_AT=`ssh $SSH_REMOTE "ls -og --time-style='+%s' $REMOTE_PATH|cut -d ' '  -f 4"`
+POSITIVE_IF_REMOTE_IS_NEWER=$(($REMOTE_UPDATED_AT - $LOCAL_UPDATED_AT))
+# ローカルとリモートのファイルハッシュ確認、同じだったら何もせず終了
 if [ "$LOCAL_MD5" = "$REMOTE_MD5" ]; then
   echo 'same hash'
   exit
 elif [ "$1" = 'check' ]; then
-  osascript -e 'display notification "database hash updating detected!"'
+  if [ $POSITIVE_IF_REMOTE_IS_NEWER -lt 0 ]; then
+    message="local file is newer than remote(${POSITIVE_IF_REMOTE_IS_NEWER}sec)"
+  else
+    message="remote file is newer than local(${POSITIVE_IF_REMOTE_IS_NEWER}sec)"
+  fi
+  osascript -e "display notification \"${message}\" with title \"Database hash updating detected\""
   exit
 fi
 if [ "$1" = 'check' ]; then
   exit
 fi
 
-LOCAL_UPDATED_AT=`ls -og --time-style='+%s' $LOCAL_PATH|cut -d ' '  -f 4`
-REMOTE_UPDATED_AT=`ssh $SSH_REMOTE "ls -og --time-style='+%s' $REMOTE_PATH|cut -d ' '  -f 4"`
-
 # リモート→ローカルにDBをコピー、ローカルのほうが更新日時が新しかった場合は確認
 if [ "$1" = 'download' ]; then
-  POSITIVE_IF_REMOTE_IS_NEWER=$(($REMOTE_UPDATED_AT - $LOCAL_UPDATED_AT))
   if [ $POSITIVE_IF_REMOTE_IS_NEWER -lt 0 ]; then
     echo "remote is older (${POSITIVE_IF_REMOTE_IS_NEWER}secs) than local. override local with remote(y/n)?"
     read confirm
@@ -41,9 +46,8 @@ if [ "$1" = 'download' ]; then
   scp $SSH_REMOTE:$REMOTE_PATH $LOCAL_PATH
 # ローカル→リモートにDBをコピー、リモートのほうが更新日時が新しかった場合は確認
 elif [ "$1" = 'upload' ]; then
-  POSITIVE_IF_LOCAL_IS_NEWER=$(($LOCAL_UPDATED_AT - $REMOTE_UPDATED_AT))
-  if [ $POSITIVE_IF_LOCAL_IS_NEWER -lt 0 ]; then
-    echo "local is older (${POSITIVE_IF_LOCAL_IS_NEWER}secs) than remote. override remote with local(y/n)?"
+  if [ $POSITIVE_IF_REMOTE_IS_NEWER -gt 0 ]; then
+    echo "local is older (${POSITIVE_IF_REMOTE_IS_NEWER}secs) than remote. override remote with local(y/n)?"
     read confirm
     if [ $confirm != 'y' ]; then
       exit
