@@ -7,6 +7,27 @@ RPROMPT=$'`branch-status-check` %~' # %~はpwd
 setopt prompt_subst #表示毎にPROMPTで設定されている文字列を評価する
 setopt transient_rprompt # 右プロンプトを自動的に消す
 
+# https://suwaru.tokyo/history%E4%B8%8D%E8%A6%81%EF%BC%81peco%E3%81%A7linux%E3%82%B3%E3%83%9E%E3%83%B3%E3%83%89%E5%B1%A5%E6%AD%B4%E3%82%92%E7%88%86%E9%80%9F%E3%81%A7%E6%A4%9C%E7%B4%A2/
+function peco-history-selection() {
+  BUFFER=`history -n 1 | tail -r  | awk '!a[$0]++' | peco`
+  CURSOR=$#BUFFER
+  zle reset-prompt
+}
+zle -N peco-history-selection
+bindkey '^R' peco-history-selection
+function peco_pkill() {
+  for pid in `ps aux | peco | awk '{ print $2 }'`
+  do
+    kill $pid
+    echo "Killed ${pid}"
+  done
+}
+alias pk="peco_pkill"
+function find_cd() {
+    cd "$(find . -type d | peco)"
+}
+alias fc="find_cd"
+
 # {{{ methods for RPROMPT
 # fg[color]表記と$reset_colorを使いたい
 # @see https://wiki.archlinux.org/index.php/zsh
