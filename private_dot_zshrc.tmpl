@@ -1,3 +1,7 @@
+PATH=$PATH:$HOME/bin
+{{- if eq .chezmoi.os "darwin" }}
+PATH="/opt/homebrew/opt/coreutils/libexec/gnubin:$PATH"
+{{- end }}
 REPORTTIME=10 # 時間のかかるコマンドを実行した時の通知
 # ----- PROMPT -----
 ## PROMPT
@@ -28,7 +32,7 @@ function find_cd() {
 }
 alias fc="find_cd"
 
-# {{{ methods for RPROMPT
+# methods for RPROMPT
 # fg[color]表記と$reset_colorを使いたい
 # @see https://wiki.archlinux.org/index.php/zsh
 autoload -U colors; colors
@@ -86,9 +90,6 @@ export HISTFILE=${HOME}/.zsh_history
 export HISTSIZE=1000
 export SAVEHIST=100000
 setopt hist_ignore_dups
-
-# golang
-export GOPATH=$HOME/go
 
 PATH="/Users/randy/perl5/bin${PATH:+:${PATH}}"; export PATH;
 PERL5LIB="/Users/randy/perl5/lib/perl5${PERL5LIB:+:${PERL5LIB}}"; export PERL5LIB;
