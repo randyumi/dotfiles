@@ -103,3 +103,7 @@ PERL_LOCAL_LIB_ROOT="/Users/randy/perl5${PERL_LOCAL_LIB_ROOT:+:${PERL_LOCAL_LIB_
 PERL_MB_OPT="--install_base \"/Users/randy/perl5\""; export PERL_MB_OPT;
 PERL_MM_OPT="INSTALL_BASE=/Users/randy/perl5"; export PERL_MM_OPT;
 
+{{- if eq .chezmoi.os "darwin" }}
+. $(brew --prefix asdf)/libexec/asdf.sh
+{{- end }}
+
