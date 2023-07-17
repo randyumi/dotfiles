@@ -1,6 +1,7 @@
 PATH=$PATH:$HOME/bin
 {{- if eq .chezmoi.os "darwin" }}
 PATH="/opt/homebrew/opt/coreutils/libexec/gnubin:$PATH"
+eval "$(/opt/homebrew/bin/brew shellenv)"
 {{- end }}
 REPORTTIME=10 # 時間のかかるコマンドを実行した時の通知
 # ----- PROMPT -----
