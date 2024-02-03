@@ -105,6 +105,6 @@ PERL_MB_OPT="--install_base \"/Users/randy/perl5\""; export PERL_MB_OPT;
 PERL_MM_OPT="INSTALL_BASE=/Users/randy/perl5"; export PERL_MM_OPT;
 
 {{- if eq .chezmoi.os "darwin" }}
-. $(brew --prefix asdf)/libexec/asdf.sh
+. ${HOME}/.asdf/asdf.sh
 {{- end }}
 

@@ -1,8 +1,11 @@
 {{- if ne .chezmoi.os "darwin" }}
 .config/karabiner/karabiner.json
+Library/
+Library/**
 {{- end }}
-# for rcl
-{{- if ne .chezmoi.hostname "CA9577" }}
+# for rcl, dw
+{{- if (not (eq .chezmoi.hostname "CF3799" "kitou")) }}
 Library/LaunchAgents/keepassshare.plist
 bin/keepassdbshare
 {{- end }}
+
