@@ -5,6 +5,7 @@ set tabstop=4
 set number
 set paste
 set nowrap
+set encoding=utf-8
 
 "自動補完
 inoremap { {}<LEFT>
