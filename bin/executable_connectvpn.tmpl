@@ -1,0 +1,7 @@
+#!/bin/sh
+
+{
+    security find-generic-password -s anyconnect | sed -nE 's/ *"acct".*="(.*)"/\1/p'
+    security find-generic-password -s anyconnect -w
+} | /opt/cisco/anyconnect/bin/vpn connect "{{- env "VPNNAME"}}" -s
+

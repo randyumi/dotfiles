@@ -7,5 +7,7 @@ Library/**
 {{- if (not (eq .chezmoi.hostname "CF3799" "keitou")) }}
 Library/LaunchAgents/keepassshare.plist
 bin/keepassdbshare
+bin/connectvpn
+Library/Application\ Support/xbar/plugins/anyconnect.2s.sh
 {{- end }}
 

@@ -1,0 +1,8 @@
+#! /usr/bin/env bash
+
+echo -n VPN:
+echo state|/opt/cisco/anyconnect/bin/vpn -s|grep 'state:'|head -1|cut -d ':' -f 2|xargs -I{} echo {}
+echo '---'
+echo '接続|shell={{- .chezmoi.homeDir }}/bin/connectvpn'
+echo '切断|shell=/opt/cisco/anyconnect/bin/vpn|param1=disconnect|param2={{- env "VPNNAME"}}'
+
