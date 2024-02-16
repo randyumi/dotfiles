@@ -4,7 +4,7 @@ Library/
 Library/**
 {{- end }}
 # for rcl, dw
-{{- if (not (eq .chezmoi.hostname "CF3799" "kitou")) }}
+{{- if (not (eq .chezmoi.hostname "CF3799" "keitou")) }}
 Library/LaunchAgents/keepassshare.plist
 bin/keepassdbshare
 {{- end }}
