@@ -1,2 +1,2 @@
-nnoremap gi :<C-u>action GotoImplementation<CR>
+nnoremap gr :<C-u>action GotoImplementation<CR>
 
