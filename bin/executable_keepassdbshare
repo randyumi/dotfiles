@@ -1,7 +1,7 @@
 #! /bin/sh
 
 export LANG='en_US.UTF-8'
-REMOTE=133.130.59.115
+REMOTE=118.27.111.3
 LOCAL_PATH=$HOME/GoogleDrive/keepass-master.kdbx.kdbx
 SSH_REMOTE=user@$REMOTE
 REMOTE_PATH=syncthing/volume/farry-merwy/keepass/keepass-master.kdbx.kdbx
