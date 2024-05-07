@@ -3,7 +3,7 @@
 export LANG='en_US.UTF-8'
 REMOTE=118.27.111.3
 LOCAL_PATH=$HOME/GoogleDrive/keepass-master.kdbx.kdbx
-SSH_REMOTE=user@$REMOTE
+SSH_REMOTE=randy@$REMOTE
 REMOTE_PATH=syncthing/volume/farry-merwy/keepass/keepass-master.kdbx.kdbx
 
 # リモート宛に接続確認、繋がらなかったら終了
