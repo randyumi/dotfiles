@@ -7,7 +7,7 @@ SSH_REMOTE=randy@$REMOTE
 REMOTE_PATH=syncthing/volume/farry-merwy/keepass/keepass-master.kdbx.kdbx
 
 # リモート宛に接続確認、繋がらなかったら終了
-ping -t 3 -c 1 133.130.59.115 > /dev/null
+ping -t 3 -c 1 $REMOTE > /dev/null
 if [ "$?" -ne 0 ]; then
   exit;
 fi
